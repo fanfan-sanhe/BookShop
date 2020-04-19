@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.po.BookBean;
+import com.service.BookService;
+import com.service.impl.BookServiceImpl;
+
 /**
  * Servlet implementation class BookServlet
  */
@@ -26,8 +30,24 @@ public class BookServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		BookBean p=new BookBean();
+		p.setName(request.getParameter("name"));
+		p.setPrice(Double.valueOf(request.getParameter("price")));
+		p.setPnum(Integer.valueOf(request.getParameter("pnum")));
+		p.setCategory(request.getParameter("category"));
+		p.setImgurl(request.getParameter("imgurl"));
+		p.setDescription(request.getParameter("description"));
+		BookService productsService=new BookServiceImpl();
+		int b=productsService.add(p);
+		if(b>0)
+		{
+			response.sendRedirect("index.jsp");
+		}
+		else
+		{
+			response.sendRedirect("add.jsp");
+		}
+		
 	}
 
 	/**
